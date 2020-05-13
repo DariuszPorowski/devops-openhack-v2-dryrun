@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 
-# test7
+# test8
 
 # copy csproj and restore as distinct layers
 COPY *.csproj ./
