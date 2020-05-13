@@ -9,7 +9,6 @@ env:
   gitHubOwner: "dariuszporowski"
   gitHubRepositoryName: "devops-openhack-v2-dryrun"
   gitHubImageName: "api-poi"
-  dockerImage: "docker.pkg.github.com/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.gitHubImageName }}:${{ github.run_id }}-${{ github.run_number }}"
 
 jobs:
   poi-api-ci:
@@ -20,4 +19,4 @@ jobs:
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag docker.pkg.github.com/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.gitHubImageName }}:${{ github.run_id }}-${{ github.run_number }}
       - name: Push the Docker image
-        run: docker push {{ env.dockerImage }}
+        run: docker push docker.pkg.github.com/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.gitHubImageName }}:${{ github.run_id }}-${{ github.run_number }}
