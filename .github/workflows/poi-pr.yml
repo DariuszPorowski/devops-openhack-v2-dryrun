@@ -24,6 +24,7 @@ jobs:
         dotnet-version: ${{ env.dotnetVersion }}
     - name: Install dependencies
       run: dotnet restore
+      working-directory: ${{ defaults.run.working-directory }}
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
