@@ -3,6 +3,7 @@ name: "POI API - PR"
 on:
   pull_request:
     branches: [openhack_refresh]
+    paths: "apis/poi/**"
 
 defaults:
   run:
