@@ -1,0 +1,35 @@
+name: "POI API - CI/CD"
+
+on:
+  push:
+    branches: [openhack_refresh]
+    paths: "apis/poi/web/**"
+
+env:
+  gitHubOwner: dariuszporowski
+  gitHubRepositoryName: devops-openhack-v2-dryrun
+  dockerRegistry: docker.pkg.github.com
+  dockerImageName: api-poi
+  AZURE_WEBAPP_NAME: openhackp80414l2poi
+
+jobs:
+  poi-api-cicd:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/build-push-action@v1
+        with:
+          path: "./apis/poi/web"
+          username: ${{ env.gitHubOwner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ${{ env.dockerRegistry }}
+          repository: ${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.dockerImageName }}
+          tags: ${{ github.run_number }}
+      - uses: azure/login@v1.1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          images: "${{ env.dockerRegistry }}/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.dockerImageName }}:${{ github.run_number }}"
