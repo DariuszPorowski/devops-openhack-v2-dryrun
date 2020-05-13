@@ -12,7 +12,7 @@ env:
   dotnetVersion: "3.1.101"
 
 jobs:
-  pr:
+  poi-api-pr:
     runs-on: ubuntu-latest
 
     steps:
