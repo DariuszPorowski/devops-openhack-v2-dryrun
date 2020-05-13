@@ -1,6 +1,7 @@
 name: "POI API - PR"
 
 on:
+  member:
   pull_request:
     branches: [ openhack_refresh ]
 
