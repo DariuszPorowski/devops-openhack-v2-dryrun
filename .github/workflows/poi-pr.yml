@@ -1,8 +1,9 @@
 name: "POI API - PR"
 
-defaults:
-  run:
-    working-directory: "/apis/poi/web"
+# it looks like it does not work
+# defaults:
+#   run:
+#     working-directory: "/apis/poi/web"
 
 on:
   pull_request:
@@ -10,6 +11,7 @@ on:
 
 env:
   dotnetVersion: "3.1.101"
+  poiWorkDir: "/apis/poi/web"
 
 jobs:
   pr:
@@ -24,9 +26,10 @@ jobs:
         dotnet-version: ${{ env.dotnetVersion }}
     - name: Install dependencies
       run: dotnet restore
-      working-directory: ${{ defaults.run.working-directory }}
+      working-directory: ${{ env.poiWorkDir }}
     - name: Build
       run: dotnet build --configuration Release --no-restore
+      working-directory: ${{ env.poiWorkDir }}
     - name: Test
       run: dotnet test --no-restore --verbosity normal
       working-directory: "apis/poi/tests/UnitTests"
