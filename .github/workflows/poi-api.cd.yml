@@ -8,7 +8,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: echo ${{ github.event.action }}
-
 # on:
 #   registry_package:
 #     types: [published,updated]
@@ -17,7 +16,7 @@ jobs:
 #   AZURE_WEBAPP_NAME: openhackp80414l2poi
 #   dockerRegistry: "docker.pkg.github.com/dariuszporowski/devops-openhack-v2-dryrun"
 #   dockerImageName: "api-poi"
-  
+
 # jobs:
 #   poi-api-cd:
 #     runs-on: ubuntu-latest
@@ -28,8 +27,8 @@ jobs:
 #       uses: azure/login@v1
 #       with:
 #         creds: ${{ secrets.AZURE_CREDENTIALS }}
-#     - name: 'Deploy to Azure Web App for Container'   
+#     - name: 'Deploy to Azure Web App for Container'
 #       uses: azure/webapps-deploy@v2
-#       with: 
-#         app-name: ${{ env.AZURE_WEBAPP_NAME }} 
+#       with:
+#         app-name: ${{ env.AZURE_WEBAPP_NAME }}
 #         images: ${{ env.dockerRegistry }}/${{ env.dockerImageName }}
