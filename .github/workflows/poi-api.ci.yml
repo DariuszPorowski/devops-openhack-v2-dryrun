@@ -1,0 +1,20 @@
+name: "POI API - CI"
+
+on:
+  push:
+    branches: [openhack_refresh]
+    paths: "apis/poi/web/**"
+
+env:
+  gitHubOwner: "DariuszPorowski"
+  gitHubRepositoryName: "devops-openhack-v2-dryrun"
+  gitHubImageName: "api-poi"
+
+jobs:
+  poi-api-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag docker.pkg.github.com/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.gitHubImageName }}:${{ github.run_id }}-${{ github.run_number }}
