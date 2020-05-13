@@ -20,7 +20,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Authenticate to Docker Registry
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u ${{ env.gitHubOwner }} --password-stdin
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag docker.pkg.github.com/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.gitHubImageName }}:${{ github.run_id }}-${{ github.run_number }}
+        run: docker build . --file Dockerfile --tag docker.pkg.github.com/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.gitHubImageName }}:${{ github.run_number }}
       - name: Push the Docker image
-        run: docker push docker.pkg.github.com/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.gitHubImageName }}:${{ github.run_id }}-${{ github.run_number }}
+        run: docker push docker.pkg.github.com/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.gitHubImageName }}:${{ github.run_number }}
