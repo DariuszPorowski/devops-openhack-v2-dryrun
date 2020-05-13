@@ -5,10 +5,6 @@ on:
     branches: [openhack_refresh]
     paths: "apis/poi/web/**"
 
-defaults:
-  run:
-    working-directory: "./apis/poi/web"
-
 env:
   gitHubOwner: "dariuszporowski"
   gitHubRepositoryName: "devops-openhack-v2-dryrun"
@@ -22,6 +18,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: docker/build-push-action@v1
         with:
+          path: "./apis/poi/web"
           username: ${{ env.gitHubOwner }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
