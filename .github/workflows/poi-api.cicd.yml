@@ -40,7 +40,7 @@ jobs:
       - uses: azure/CLI@v1
         with:
           inlineScript: |
-            az webapp config appsettings set --resource-group ${{ env.AZURE_WEBAPP_RG }} --name ${{ env.AZURE_WEBAPP_NAME }} --settings DOCKER_REGISTRY_SERVER_USERNAME=${{ env.gitHubOwner }} DOCKER_REGISTRY_SERVER_PASSWORD=${{ secrets.GITHUB_TOKEN }}
+            az webapp config appsettings set --resource-group ${{ env.AZURE_WEBAPP_RG }} --name ${{ env.AZURE_WEBAPP_NAME }} --settings DOCKER_REGISTRY_SERVER_USERNAME=${{ env.gitHubOwner }} DOCKER_REGISTRY_SERVER_PASSWORD=${{ secrets.GITHUB_TOKEN }} DOCKER_REGISTRY_SERVER_URL=${{ env.dockerRegistry }}/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}
       - uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
