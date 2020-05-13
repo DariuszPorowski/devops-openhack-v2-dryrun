@@ -1,0 +1,31 @@
+name: "POI API - PR"
+
+on:
+  pull_request:
+    branches: [openhack_refresh]
+    paths: "apis/poi/**"
+
+defaults:
+  run:
+    working-directory: "./apis/poi/web"
+
+env:
+  dotnetVersion: "3.1.101"
+
+jobs:
+  poi-api-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.dotnetVersion }}
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Debug --no-restore
+      - name: Test
+        run: dotnet test --no-restore --verbosity detailed
+        working-directory: "./apis/poi/tests/UnitTests"
