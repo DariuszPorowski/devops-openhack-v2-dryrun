@@ -5,6 +5,10 @@ on:
     branches: [openhack_refresh]
     paths: "apis/poi/web/**"
 
+defaults:
+  run:
+    working-directory: "./apis/poi/web"
+
 env:
   gitHubOwner: "dariuszporowski"
   gitHubRepositoryName: "devops-openhack-v2-dryrun"
