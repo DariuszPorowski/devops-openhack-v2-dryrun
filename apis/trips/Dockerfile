@@ -1,16 +1,16 @@
-FROM golang:1.10.3 AS gobuild
+FROM golang:1.11.1 AS gobuild
 
 WORKDIR /go/src/github.com/Azure-Samples/openhack-devops-team/apis/trips
 
-RUN curl https://glide.sh/get | sh
-
 COPY . .
 
-RUN glide install --skip-test
+ENV GO111MODULE=on
+
+RUN go get
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
-FROM alpine:3.7 AS gorun
+FROM alpine:3.8 AS gorun
 
 ENV SQL_USER="YourUserName" \
 SQL_PASSWORD="changeme" \
