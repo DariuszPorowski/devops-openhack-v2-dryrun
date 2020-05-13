@@ -1,6 +1,8 @@
 name: "POI API - CD"
 
-on: [registry_package]
+on:
+  registry_package:
+    types: [published,updated]
 
 jobs:
   poi-api-cd:
