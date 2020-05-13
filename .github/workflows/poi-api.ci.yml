@@ -22,7 +22,7 @@ jobs:
           username: ${{ env.gitHubOwner }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: ${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}
+          repository: ${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.dockerImageName }}
           tags: ${{ github.run_number }}
           
 #       - name: Authenticate to Docker Registry
