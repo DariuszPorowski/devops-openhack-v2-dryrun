@@ -1,13 +1,12 @@
 name: "POI API - PR"
 
-on:
-  member:
-  pull_request:
-    branches: [ openhack_refresh ]
-
 defaults:
   run:
     working-directory: "/apis/poi/web"
+
+on:
+  pull_request:
+    branches: [ openhack_refresh ]
 
 env:
   dotnetVersion: "3.1.101"
