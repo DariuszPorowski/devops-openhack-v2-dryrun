@@ -26,6 +26,8 @@ jobs:
           registry: ${{ env.dockerRegistry }}
           repository: ${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.dockerImageName }}
           tags: ${{ github.run_number }}
+          tag_with_ref: true
+          tag_with_sha: true
       - uses: azure/login@v1.1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
