@@ -77,3 +77,8 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: ${{ env.slotName }}
           images: "${{ env.dockerRegistry }}/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.dockerImageName }}:${{ github.run_number }}"
+ 
+      - name: Check 200
+        run: ./polling.sh https://openhackp80414l2poi.azurewebsites.net
+        working-directory: "./.github/workflows"
+  
