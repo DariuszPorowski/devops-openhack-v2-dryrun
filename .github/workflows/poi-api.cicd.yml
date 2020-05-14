@@ -40,7 +40,7 @@ jobs:
       # - uses: azure/CLI@v1
       #   with:
       #     inlineScript: |
-      #       az webapp config appsettings set --resource-group ${{ env.AZURE_WEBAPP_RG }} --name ${{ env.AZURE_WEBAPP_NAME }} --settings DOCKER_REGISTRY_SERVER_USERNAME=${{ env.gitHubOwner }} DOCKER_REGISTRY_SERVER_PASSWORD=${{ secrets.GITHUB_TOKEN }} DOCKER_REGISTRY_SERVER_URL=${{ env.dockerRegistry }} DOCKER_ENABLE_CI=true
+      #       az webapp config appsettings set --resource-group ${{ env.AZURE_WEBAPP_RG }} --name ${{ env.AZURE_WEBAPP_NAME }} --settings DOCKER_REGISTRY_SERVER_USERNAME=${{ env.gitHubOwner }} DOCKER_REGISTRY_SERVER_PASSWORD=${{ secrets.GITHUB_TOKEN }} DOCKER_REGISTRY_SERVER_URL=https://${{ env.dockerRegistry }} DOCKER_ENABLE_CI=true
 
       - name: Set Web App ACR authentication
         uses: Azure/appservice-settings@v1
@@ -50,12 +50,12 @@ jobs:
             [
                 {
                     "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
-                    "value": "${{ secrets.GITHUB_TOKEN }}",
+                    "value": "${{ secrets.DOCKER_PULL_PAT }}",
                     "slotSetting": false
                 },
                 {
                     "name": "DOCKER_REGISTRY_SERVER_URL",
-                    "value": "${{ env.dockerRegistry }}",
+                    "value": "https://${{ env.dockerRegistry }}",
                     "slotSetting": false
                 },
                 {
