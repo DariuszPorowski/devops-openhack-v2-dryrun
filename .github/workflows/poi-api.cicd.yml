@@ -105,21 +105,28 @@ jobs:
           slot-name: ${{ env.slotName }}
           images: "${{ env.dockerRegistry }}/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.dockerImageName }}:${{ github.run_number }}"
 
-      - name: Health Check
-        uses: Jtalk/url-health-check-action@v1.3
-        with:
-          url: https://${{ env.AZURE_WEBAPP_NAME }}-${{ env.slotName }}.azurewebsites.net/${{ env.healthcheckSuffix }}
-          max-attempts: 10
-          retry-delay: 5s
+      # - name: Health Check
+      #   uses: Jtalk/url-health-check-action@v1.3
+      #   with:
+      #     url: https://${{ env.AZURE_WEBAPP_NAME }}-${{ env.slotName }}.azurewebsites.net/${{ env.healthcheckSuffix }}
+      #     max-attempts: 10
+      #     retry-delay: 5s
 
-      # - name: Check 200
-      #   run: |
-      #     chmod +x polling.sh
-      #     while [[ $(./polling.sh https://${{ env.AZURE_WEBAPP_NAME }}-${{ env.slotName }}.azurewebsites.net/${{ env.healthcheckSuffix }}) != "200" ]]; do
-      #       echo 0 >/dev/null
-      #       sleep 2
-      #     done
-      #   working-directory: "./.github/workflows"
+      - name: Check 200
+        run: |
+          chmod +x polling.sh
+
+          while [[ true ]]; do
+            code=$(./polling.sh https://${{ env.AZURE_WEBAPP_NAME }}-${{ env.slotName }}.azurewebsites.net/${{ env.healthcheckSuffix }})
+ 
+            if [[ $code == "200" ]]; then
+                echo ${code}
+                exit 0
+            else
+                sleep 5s
+            fi
+          done
+        working-directory: "./.github/workflows"
 
       - uses: azure/CLI@v1
         with:
