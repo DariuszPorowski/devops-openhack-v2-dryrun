@@ -62,7 +62,7 @@ jobs:
                 }
             ]
 
-      - name: Set WebApp AppSettings - {{ env.slotName }}
+      - name: Set WebApp AppSettings - slot
         uses: Azure/appservice-settings@v1
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
@@ -103,8 +103,8 @@ jobs:
           general-settings-json: '{"autoSwapSlotName": "production"}'
 
       - name: Deploy WebApp
-        # uses: azure/webapps-deploy@v2
-        uses: azure/webapps-container-deploy@v1
+        uses: azure/webapps-deploy@v2
+        #uses: azure/webapps-container-deploy@v1
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: ${{ env.slotName }}
