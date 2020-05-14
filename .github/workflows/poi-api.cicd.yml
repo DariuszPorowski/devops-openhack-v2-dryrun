@@ -11,6 +11,7 @@ env:
   dockerRegistry: docker.pkg.github.com
   dockerImageName: api-poi
   AZURE_WEBAPP_NAME: openhackp80414l2poi
+  workDir: "./apis/poi/web"
 
 jobs:
   poi-api-cicd:
@@ -22,7 +23,7 @@ jobs:
       - name: Build Docker image and push to registry
         uses: docker/build-push-action@v1
         with:
-          path: "./apis/poi/web"
+          path: ${{ env.workDir }}
           username: ${{ env.gitHubOwner }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ${{ env.dockerRegistry }}
