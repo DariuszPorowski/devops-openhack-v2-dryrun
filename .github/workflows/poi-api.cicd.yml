@@ -83,6 +83,8 @@ jobs:
 
       - name: Check 200
         run: |
+          ls
+          chmod +x polling.sh
           while [[ $(./polling.sh https://${{ env.AZURE_WEBAPP_NAME }}-${{ env.slotName }}.azurewebsites.net/${{ env.healthcheckSuffix }}) != "200" ]]; do
             echo 0 >/dev/null
             sleep 2
