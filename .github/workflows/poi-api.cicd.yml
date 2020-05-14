@@ -19,7 +19,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: docker/build-push-action@v1
+
+      - name: Build Docker image and push to registry
+        uses: docker/build-push-action@v1
         with:
           path: "./apis/poi/web"
           username: ${{ env.gitHubOwner }}
@@ -29,7 +31,9 @@ jobs:
           tags: ${{ github.run_number }}
           tag_with_ref: true
           tag_with_sha: true
-      - uses: azure/login@v1.1
+
+      - name: Auth to Azure
+        uses: azure/login@v1.1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       # - uses: azure/docker-login@v1
@@ -42,7 +46,7 @@ jobs:
       #     inlineScript: |
       #       az webapp config appsettings set --resource-group ${{ env.AZURE_WEBAPP_RG }} --name ${{ env.AZURE_WEBAPP_NAME }} --settings DOCKER_REGISTRY_SERVER_USERNAME=${{ env.gitHubOwner }} DOCKER_REGISTRY_SERVER_PASSWORD=${{ secrets.GITHUB_TOKEN }} DOCKER_REGISTRY_SERVER_URL=https://${{ env.dockerRegistry }}
 
-      - name: Set Web App ACR authentication
+      - name: Set WebApp Docker Registry authentication
         uses: Azure/appservice-settings@v1
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
@@ -65,7 +69,8 @@ jobs:
                 }
             ]
 
-      - uses: azure/webapps-deploy@v2
+      - name: Deploy WebApp
+        uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           images: "${{ env.dockerRegistry }}/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.dockerImageName }}:${{ github.run_number }}"
