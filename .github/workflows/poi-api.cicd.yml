@@ -49,19 +49,6 @@ jobs:
       #     inlineScript: |
       #       az webapp config appsettings set --resource-group ${{ env.AZURE_WEBAPP_RG }} --name ${{ env.AZURE_WEBAPP_NAME }} --settings DOCKER_REGISTRY_SERVER_USERNAME=${{ env.gitHubOwner }} DOCKER_REGISTRY_SERVER_PASSWORD=${{ secrets.GITHUB_TOKEN }} DOCKER_REGISTRY_SERVER_URL=https://${{ env.dockerRegistry }}
 
-      - name: Set WebApp AppSettings - production
-        uses: Azure/appservice-settings@v1
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          app-settings-json: |
-            [
-                {
-                    "name": "WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG",
-                    "value": "1",
-                    "slotSetting": false
-                }
-            ]
-
       - name: Set WebApp AppSettings - slot
         uses: Azure/appservice-settings@v1
         with:
@@ -83,42 +70,26 @@ jobs:
                     "name": "DOCKER_REGISTRY_SERVER_USERNAME",
                     "value": "${{ env.gitHubOwner }}",
                     "slotSetting": false
-                },
-                {
-                    "name": "WEBSITE_SWAP_WARMUP_PING_PATH",
-                    "value": "/${{ env.healthcheckSuffix }}",
-                    "slotSetting": false
-                },
-                {
-                    "name": "WEBSITE_SWAP_WARMUP_PING_STATUSES",
-                    "value": "200",
-                    "slotSetting": false
-                },
-                {
-                    "name": "WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG",
-                    "value": "1",
-                    "slotSetting": false
                 }
             ]
-          general-settings-json: '{"autoSwapSlotName": "production"}'
 
       - name: Deploy WebApp
-        uses: azure/webapps-deploy@v2
-        #uses: azure/webapps-container-deploy@v1
+        #uses: azure/webapps-deploy@v2
+        uses: azure/webapps-container-deploy@v1
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: ${{ env.slotName }}
           images: "${{ env.dockerRegistry }}/${{ env.gitHubOwner }}/${{ env.gitHubRepositoryName }}/${{ env.dockerImageName }}:${{ github.run_number }}"
 
-      # - name: Check 200
-      #   run: |
-      #     while [[ $(./polling.sh https://${{ env.AZURE_WEBAPP_NAME }}-${{ env.slotName }}.azurewebsites.net/${{ env.healthcheckSuffix }}) != "200" ]]; do
-      #       echo 0 >/dev/null
-      #       sleep 2
-      #     done
-      #   working-directory: "./.github/workflows"
+      - name: Check 200
+        run: |
+          while [[ $(./polling.sh https://${{ env.AZURE_WEBAPP_NAME }}-${{ env.slotName }}.azurewebsites.net/${{ env.healthcheckSuffix }}) != "200" ]]; do
+            echo 0 >/dev/null
+            sleep 2
+          done
+        working-directory: "./.github/workflows"
 
-      # - uses: azure/CLI@v1
-      #   with:
-      #     inlineScript: |
-      #       az webapp deployment slot swap -g ${{ env.AZURE_WEBAPP_RG }} -n ${{ env.AZURE_WEBAPP_NAME }} --slot ${{ env.slotName }} --target-slot production
+      - uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az webapp deployment slot swap -g ${{ env.AZURE_WEBAPP_RG }} -n ${{ env.AZURE_WEBAPP_NAME }} --slot ${{ env.slotName }} --target-slot production
