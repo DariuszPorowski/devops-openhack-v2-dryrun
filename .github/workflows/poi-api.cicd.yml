@@ -11,7 +11,6 @@ env:
   dockerRegistry: docker.pkg.github.com
   dockerImageName: api-poi
   AZURE_WEBAPP_NAME: openhackp80414l2poi
-  AZURE_WEBAPP_RG: openhackp80414l2rg
 
 jobs:
   poi-api-cicd:
